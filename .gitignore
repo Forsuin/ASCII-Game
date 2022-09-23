@@ -121,6 +121,8 @@ Temporary Items
 # Default build directory
 build
 
+.idea
+
 # User-specific stuff
 .idea/**/workspace.xml
 .idea/**/tasks.xml
