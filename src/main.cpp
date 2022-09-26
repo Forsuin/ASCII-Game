@@ -22,8 +22,6 @@ std::optional<std::filesystem::path> getDataDir(){
     return root / "data";
 }
 
-
-
 int main(int argc, char* argv[]){
     tcod::Console console = tcod::Console{80, 40};
 
@@ -60,10 +58,13 @@ int main(int argc, char* argv[]){
         SDL_WaitEvent(nullptr);
         while(SDL_PollEvent(&event)){
             switch(event.type){
+                case SDL_KEYDOWN:
+                    switch(event.key.keysym.sym){
+                        SDLK_UP:
+                    }
                 case SDL_QUIT:
                     return 0;
             }
         }
     }
-
 }

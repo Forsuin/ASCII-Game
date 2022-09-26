@@ -19,7 +19,7 @@ file(
     ${PROJECT_SOURCE_DIR}/src/*.cpp
     ${PROJECT_SOURCE_DIR}/src/*.hpp
 )
-add_executable(${PROJECT_NAME} ${SOURCE_FILES})
+add_executable(${PROJECT_NAME} ${SOURCE_FILES} src/engine.cpp src/engine.hpp src/action.hpp src/world.cpp src/world.hpp src/tile.cpp src/tile.hpp src/entity.cpp src/entity.hpp)
 
 # Ensure the C++20 standard is available.
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
@@ -49,7 +49,7 @@ endif()
 
 find_package(SDL2 CONFIG REQUIRED)
 find_package(libtcod CONFIG REQUIRED)
-find_package(fmt)
+find_package(fmt CONFIG REQUIRED)
 target_link_libraries(
     ${PROJECT_NAME}
     PRIVATE
