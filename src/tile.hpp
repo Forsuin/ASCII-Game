@@ -13,13 +13,17 @@ struct Object {
         DOOR,
         CHAIR,
         CRAFTING_TABLE,
-    };
+    } type;
 
-    bool isTransparent;
+    bool isWalkable;
+
+    Object(Object::Type type, bool isWalkable) : type(type), isWalkable(isWalkable){}
 };
 
-class Tile {
-   private:
+struct Tile {
     FloorType floor;
     Object object;
+    Entity entity;
+
+    Tile(FloorType floor, Object object) : floor(floor), object(object){}
 };

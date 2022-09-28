@@ -19,7 +19,7 @@ file(
     ${PROJECT_SOURCE_DIR}/src/*.cpp
     ${PROJECT_SOURCE_DIR}/src/*.hpp
 )
-add_executable(${PROJECT_NAME} ${SOURCE_FILES} src/engine.cpp src/engine.hpp src/action.hpp src/world.cpp src/world.hpp src/tile.cpp src/tile.hpp src/entity.cpp src/entity.hpp)
+add_executable(${PROJECT_NAME} ${SOURCE_FILES} src/engine.cpp src/engine.hpp src/action.hpp src/world.hpp src/tile.hpp src/entity.hpp src/component.hpp)
 
 # Ensure the C++20 standard is available.
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)

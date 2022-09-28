@@ -8,8 +8,12 @@
 class World {
    private:
     std::vector<Tile> tiles;
-    std::unordered_set<Entity> entities;
 
    public:
-
+    World(){}
+    World(int x , int y){
+        for(int i = 0; i < x * y; i++){
+            tiles.push_back({FloorType::STONE, {Object::Type::DOOR, true}});
+        }
+    }
 };
