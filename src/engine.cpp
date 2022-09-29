@@ -8,7 +8,6 @@
 #include "engine.hpp"
 
 
-
 static std::optional<std::filesystem::path> getDataDir(){
     static auto root = std::filesystem::path{"."};
 
@@ -28,7 +27,7 @@ static std::optional<std::filesystem::path> getDataDir(){
 void Engine::init(int argc, char* argv[]) {
     console = tcod::Console{80, 40};
 
-    TCOD_ContextParams params = TCOD_ContextParams{};
+    auto params = TCOD_ContextParams{};
     params.tcod_version = TCOD_COMPILEDVERSION;
     params.argc = argc;
     params.argv = argv;
@@ -51,19 +50,24 @@ void Engine::init(int argc, char* argv[]) {
 
     Entity test;
     test.addComponent("Position", makeComponent<Position>(40, 20));
-    test.addComponent("Renderer", makeComponent<Renderer>(TCOD_ColorRGB{255, 255, 255}, '@', "Test"));
+    test.addComponent("Renderer", makeComponent<Renderer>(TCOD_ColorRGB{255, 128, 128}, '@', "Test"));
     test.addComponent("Movable", makeComponent<Movable>());
 
     for(auto const& [key, value] : test.components){
         std::cout << key << '\n';
     }
+
+    entities.push_back(std::move(test));
+
 }
 
-void Engine::loop() {
-    render();
+[[noreturn]] void Engine::loop() {
+    while(true) {
+        render();
 
-    Action action = processInput();
-    executeAction(action);
+        Action action = processInput();
+        executeAction(action);
+    }
 }
 
 void Engine::render() {
@@ -73,9 +77,9 @@ void Engine::render() {
     for(const Entity& entity : entities){
         if(entity.hasComponents({"Position", "Renderer"})){
             std::cout << "Entity has components" << std::endl;
-            //Position* pos = dynamic_cast<Position*>(entity.getComponent("Position"));
-            //Renderer* renderer = dynamic_cast<Renderer*>(entity.getComponent("Renderer"));
-            //tcod::print(console, {pos->x, pos->y}, std::string(1, renderer->character), renderer->color, std::nullopt);
+            Position* pos = entity.getComponent<Position>("Position").value();
+            Renderer* renderer = entity.getComponent<Renderer>("Renderer").value();
+            tcod::print(console, {pos->x, pos->y}, std::string(1, renderer->character), renderer->color, std::nullopt);
         }
     }
 
@@ -108,4 +112,6 @@ Action Engine::processInput() {
     }
 }
 
-void Engine::executeAction(Action action) {}
+void Engine::executeAction(Action action) {
+
+}

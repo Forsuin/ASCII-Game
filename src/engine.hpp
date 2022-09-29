@@ -18,7 +18,7 @@ class Engine {
     Engine()= default;
 
     void init(int argc, char* argv[]);
-    void loop();
+    [[noreturn]] void loop();
     void render();
     static Action processInput();
     static void executeAction(Action action);

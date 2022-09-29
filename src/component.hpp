@@ -5,13 +5,14 @@
 #include <libtcod.hpp>
 #include <utility>
 
+
 struct Component {
     virtual ~Component() = default;
 };
 
 struct Position : Component {
-    int x;
-    int y;
+    int x{};
+    int y{};
 
     Position() = default;
     Position(int x, int y) : x(x), y(y) {}
@@ -19,8 +20,8 @@ struct Position : Component {
 };
 
 struct Renderer : Component {
-    TCOD_ColorRGB color;
-    char character;
+    TCOD_ColorRGB color{};
+    char character{};
     std::string name;
 
     Renderer() = default;

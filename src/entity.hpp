@@ -50,9 +50,13 @@ struct Entity {
         }
     }
 
-    [[nodiscard]] Component* getComponent(const std::string& name) const {
+    template<typename T>
+    std::optional<T*> getComponent(const std::string& name) const {
         if(components.contains(name)){
-            return components.at(name).get();
+            return dynamic_cast<T*>(components.at(name).get());
+        }
+        else {
+            return std::nullopt;
         }
     }
 };
