@@ -10,10 +10,6 @@ class World {
     std::vector<Tile> tiles;
 
    public:
-    World(){}
-    World(int x , int y){
-        for(int i = 0; i < x * y; i++){
-            tiles.push_back({FloorType::STONE, {Object::Type::DOOR, true}});
-        }
-    }
+    World()= default;
+    World(int x , int y) : tiles(x * y, Tile{}){}
 };
