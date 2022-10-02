@@ -11,6 +11,7 @@ class Engine {
     World world;
     std::vector<Entity> entities;
 
+    //tcod::Console used for rendering only
     tcod::Console console;
     tcod::Context context;
 
@@ -21,5 +22,7 @@ class Engine {
     [[noreturn]] void loop();
     void render();
     static Action processInput();
-    static void executeAction(Action action);
+
+    //could have a cache of controllable entities, maybe if needed
+    void executeAction(Action action);
 };

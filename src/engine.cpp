@@ -72,11 +72,9 @@ void Engine::init(int argc, char* argv[]) {
 
 void Engine::render() {
     TCOD_console_clear(console.get());
-    tcod::print(console, {0, 0}, ".", std::nullopt, std::nullopt);
 
     for(const Entity& entity : entities){
         if(entity.hasComponents({"Position", "Renderer"})){
-            std::cout << "Entity has components" << std::endl;
             Position* pos = entity.getComponent<Position>("Position").value();
             Renderer* renderer = entity.getComponent<Renderer>("Renderer").value();
             tcod::print(console, {pos->x, pos->y}, std::string(1, renderer->character), renderer->color, std::nullopt);
@@ -108,10 +106,36 @@ Action Engine::processInput() {
                 //TODO: could save on exit later
                 std::exit(EXIT_SUCCESS);
                 break;
+            default:
+                return Action::NO_OP;
+                break;
         }
     }
 }
 
 void Engine::executeAction(Action action) {
+    if(action == Action::NO_OP) return;
 
+    for(const Entity& entity : entities){
+        if(entity.hasComponent("Movable")){
+            Position* pos = entity.getComponent<Position>("Position").value();
+
+            switch(action){
+                case Action::MOVE_UP:
+                    pos->y--;
+                    break;
+                case Action::MOVE_DOWN:
+                    pos->y++;
+                    break;
+                case Action::MOVE_LEFT:
+                    pos->x--;
+                    break;
+                case Action::MOVE_RIGHT:
+                    pos->x++;
+                    break;
+                default:
+                    return;
+            }
+        }
+    }
 }

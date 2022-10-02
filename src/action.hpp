@@ -3,6 +3,7 @@
 #define ASCII_GAME_ACTION_HPP
 
 enum class Action {
+    NO_OP,
     MOVE_UP,
     MOVE_DOWN,
     MOVE_LEFT,
