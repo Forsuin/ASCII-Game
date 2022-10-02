@@ -4,11 +4,13 @@
 #include <random>
 #include <string>
 #include <unordered_map>
+#include <algorithm>
 
 #include "component.hpp"
+#include "gameobject.hpp"
 
 
-struct Entity {
+struct Entity : GameObject {
     std::unordered_map<std::string, std::unique_ptr<Component>> components;
 
 
@@ -22,10 +24,10 @@ struct Entity {
     [[nodiscard]] bool hasComponents(std::initializer_list<std::string> names) const{
         if(components.empty()) return false;
 
-        for(auto& name : names){
-            if(!hasComponent(name)){
-                return false;
-            }
+        if(!std::ranges::all_of(names.begin(), names.end(), [&](const std::string& name){
+                return hasComponent(name);
+            })){
+
         }
         return true;
     }
