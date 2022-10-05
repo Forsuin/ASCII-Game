@@ -16,7 +16,7 @@ class Engine {
     tcod::Context context;
 
    public:
-    Engine()= default;
+    Engine() : world(80, 40) {};
 
     void init(int argc, char* argv[]);
     [[noreturn]] void loop();

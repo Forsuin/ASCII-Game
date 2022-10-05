@@ -1,11 +1,12 @@
-#include <SDL.h>
 #include <iostream>
 #include <filesystem>
 #include <optional>
 
+#include <SDL.h>
 #include <libtcod.hpp>
 
 #include "engine.hpp"
+#include "tile.hpp"
 
 
 static std::optional<std::filesystem::path> getDataDir(){
@@ -27,6 +28,7 @@ static std::optional<std::filesystem::path> getDataDir(){
 void Engine::init(int argc, char* argv[]) {
     console = tcod::Console{80, 40};
 
+
     auto params = TCOD_ContextParams{};
     params.tcod_version = TCOD_COMPILEDVERSION;
     params.argc = argc;
@@ -43,22 +45,19 @@ void Engine::init(int argc, char* argv[]) {
         std::exit(EXIT_FAILURE);
     }
 
-    auto tileset = tcod::load_tilesheet(dataPath.value() / "dejavu16x16_gs_tc.png", {32, 8}, tcod::CHARMAP_TCOD);
+    auto tileset = tcod::load_tilesheet(dataPath.value() / "sapphos_square_16x16.png", {16, 16}, tcod::CHARMAP_CP437);
     params.tileset = tileset.get();
 
     context = tcod::Context(params);
 
+
+
     Entity test;
     test.addComponent("Position", makeComponent<Position>(40, 20));
-    test.addComponent("Renderer", makeComponent<Renderer>(TCOD_ColorRGB{255, 128, 128}, '@', "Test"));
+    test.addComponent("Renderable", makeComponent<Renderable>(TCOD_ColorRGB{255, 128, 128}, '@', "Test"));
     test.addComponent("Movable", makeComponent<Movable>());
 
-    for(auto const& [key, value] : test.components){
-        std::cout << key << '\n';
-    }
-
     entities.push_back(std::move(test));
-
 }
 
 [[noreturn]] void Engine::loop() {
@@ -73,10 +72,16 @@ void Engine::init(int argc, char* argv[]) {
 void Engine::render() {
     TCOD_console_clear(console.get());
 
+    for(int y = 0; y < 40; y++){
+        for(int x = 0; x < 80; x++){
+            tcod::print(console, {x, y}, "█", TCOD_color_RGB(x, y, 0), std::nullopt);
+        }
+    }
+
     for(const Entity& entity : entities){
-        if(entity.hasComponents({"Position", "Renderer"})){
+        if(entity.hasComponents({"Position", "Renderable"})){
             Position* pos = entity.getComponent<Position>("Position").value();
-            Renderer* renderer = entity.getComponent<Renderer>("Renderer").value();
+            Renderable* renderer = entity.getComponent<Renderable>("Renderable").value();
             tcod::print(console, {pos->x, pos->y}, std::string(1, renderer->character), renderer->color, std::nullopt);
         }
     }

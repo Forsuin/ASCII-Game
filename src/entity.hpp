@@ -11,9 +11,10 @@
 
 
 struct Entity : GameObject {
+   private:
     std::unordered_map<std::string, std::unique_ptr<Component>> components;
 
-
+   public:
     [[nodiscard]] bool hasComponent(const std::string& componentName) const{
         if(components.find(componentName) == components.end()){
             return false;
