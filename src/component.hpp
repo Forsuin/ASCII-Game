@@ -1,9 +1,11 @@
 #pragma once
 
 #include <memory>
+#include <utility>
 
 #include <libtcod.hpp>
-#include <utility>
+
+#include "material.hpp"
 
 
 struct Component {
@@ -19,17 +21,19 @@ struct Position : Component {
 
 };
 
-struct Renderer : Component {
+struct Renderable : Component {
     TCOD_ColorRGB color{};
     char character{};
     std::string name;
 
-    Renderer() = default;
-    Renderer(TCOD_ColorRGB color, char character, std::string name)
+    Renderable() = default;
+    Renderable(TCOD_ColorRGB color, char character, std::string name)
         : color(color), character(character), name(std::move(name)) {}
 };
 
 struct Movable : Component{};
+
+
 
 template<typename T, typename... Args>
 std::unique_ptr<Component> makeComponent(Args... args){
